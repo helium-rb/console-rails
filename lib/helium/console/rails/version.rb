@@ -1,5 +1,5 @@
 module Helium
-  module Console
+  class Console
     module Rails
       VERSION = "0.1.0"
     end

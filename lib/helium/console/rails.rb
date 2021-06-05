@@ -1,10 +1,15 @@
+require "helium/console"
 require "helium/console/rails/version"
+require "helium/console/rails/railtie"
 
 module Helium
-  module Console
+  class Console
     module Rails
-      class Error < StandardError; end
-      # Your code goes here...
+      def self.load!
+        Dir.glob(File.join(File.dirname(__FILE__), "rails", "registry", "**/*.rb")).each do |file|
+          require file
+        end
+      end
     end
   end
 end
