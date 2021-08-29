@@ -10,8 +10,9 @@ if defined? ActiveRecord
         next if key == primary_key
         table.row(key.to_s, value)
       end
+
       [
-        "# #{object.class.name}",
+        "# #{format object.class, short: true}",
         format(table, **options)
       ].join($/)
     end

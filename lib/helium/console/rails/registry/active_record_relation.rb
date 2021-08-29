@@ -1,26 +1,25 @@
 if defined? ActiveRecord
   Helium::Console.define_formatter_for ActiveRecord::Relation do
     def call
-      # primary_key = object.class.primary_key
+      return format_loaded if object.loaded?
 
-      table = Helium::Console::Table.new(runner: "  ", after_key: ": ", format_keys: false)
-      formatted = object.map { |record| format_record(record) }
-      [
-        ["#", object.klass.name, "relation (#{object.size} element#{:s if object.size > 1})"].join(" "),
-        formatted.join("#{$/}|#{$/}")
-      ].join($/)
+      if level == 1
+        object.load
+        format_loaded
+      else
+        format_unloaded
+      end
     end
 
-    def format_record(record)
-      table = Helium::Console::Table.new(runner: '| ', after_key: ": ", format_keys: false)
-      table.row(primary_key, record.attributes[primary_key]) if primary_key
+    def format_loaded
+      [
+        "# #{format(object.klass, short: true)} relation (#{object.size} element#{:s if object.size > 1})",
+        format(object.to_a)[1..-1]
+      ].join("\n")
+    end
 
-      record.attributes.sort_by(&:first).each do |key, value|
-        next if key == primary_key
-        table.row(key.to_s, value)
-      end
-
-      format(table, **options, max_width: max_width - 2)
+    def format_unloaded
+      "# #{format(object.klass, short: true)} relation #{red('(not loaded)')}"
     end
 
     def primary_key
