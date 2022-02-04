@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-require "bundler/setup"
-require "helium/console/rails"
+require 'bundler/setup'
+require 'helium/console/rails'
 
-require "pry"
+require 'pry'
 Pry.start

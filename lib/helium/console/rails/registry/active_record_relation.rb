@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if defined? ActiveRecord
   Helium::Console.define_formatter_for ActiveRecord::Relation do
     def call
@@ -12,10 +14,14 @@ if defined? ActiveRecord
     end
 
     def format_loaded
-      [
-        "# #{format(object.klass, short: true)} relation (#{object.size} element#{:s if object.size > 1})",
-        format(object.to_a)[1..-1]
-      ].join("\n")
+      yield_lines do |y|
+        y << "# #{format(object.klass, short: true)} relation (#{object.size} element#{:s if object.size > 1})"
+        format(object.to_a).lines.each.with_index do |line, index|
+          next if index.zero?
+
+          y << line
+        end
+      end
     end
 
     def format_unloaded

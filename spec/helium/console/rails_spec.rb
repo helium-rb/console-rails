@@ -1,9 +1,7 @@
-RSpec.describe Helium::Console::Rails do
-  it "has a version number" do
-    expect(Helium::Console::Rails::VERSION).not_to be nil
-  end
+# frozen_string_literal: true
 
-  it "does something useful" do
-    expect(false).to eq(true)
+RSpec.describe Helium::Console::Rails do
+  it 'has a version number' do
+    expect(Helium::Console::Rails::VERSION).not_to be nil
   end
 end
