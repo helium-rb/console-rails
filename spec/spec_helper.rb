@@ -2,7 +2,12 @@
 
 require 'bundler/setup'
 require 'rails/railtie'
+require 'active_record'
+require 'sqlite3'
 require 'helium/console/rails'
+require 'helium/console/rspec'
+require 'temping'
+require 'byebug'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -15,3 +20,8 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+ActiveRecord::Base.establish_connection(
+  adapter: :sqlite3,
+  database: ':memory:'
+)
